@@ -1,0 +1,108 @@
+<div class="container mt-4">
+  <div class="adminHeaderGlobal">
+  <h1 class="titleAdmin">Mis Rondas</h1>
+  <button mat-raised-button (click)="openCreateModal()" class="buttonAddAdmin">
+    Crear Nueva Ronda
+  </button>
+</div>
+
+
+  <!-- Buscador de ronda por nombre-->
+  <mat-form-field appearance="outline" class="w-100 mb-3 search-round-field">
+    <mat-label>Buscar ronda por nombre</mat-label>
+    <input matInput [(ngModel)]="searchTerm" (ngModelChange)="filterRounds()" placeholder="Escribe un nombre..." />
+  </mat-form-field>
+
+  <!-- Aquí he puesto la tabla y el pagindor-->
+  <div class="table-container tableGlobal">
+    <!-- Tabla -->
+    <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8 w-100">
+      <!-- ID -->
+      <ng-container matColumnDef="id">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>ID</th>
+        <td mat-cell *matCellDef="let round">{{ round.id }}</td>
+      </ng-container>
+
+      <!-- Nombre -->
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Nombre</th>
+        <td mat-cell *matCellDef="let round">{{ round.name }}</td>
+      </ng-container>
+
+      <!-- Acciones para ver, editar y eliminar movimientos -->
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef>Acciones</th>
+        <td mat-cell *matCellDef="let round">
+          <button mat-icon-button matTooltip="Ver movimientos" (click)="openModal(round)">
+            <mat-icon>visibility</mat-icon>
+          </button>
+          <button mat-icon-button matTooltip="Editar" (click)="editRound(round)">
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button mat-icon-button matTooltip="Eliminar" (click)="deleteRound(round.id)">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+
+    
+    <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+  </div>
+
+  <!-- Modal para crear y editar nuestras rondas-->
+  <div class="modal fade" id="createRoundModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <form [formGroup]="roundForm" (ngSubmit)="onSubmit()">
+          <div class="modal-header">
+            <h5 class="modal-title">Crear / Editar Ronda</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+          </div>
+          <div class="modal-body">
+            <mat-form-field appearance="fill" class="w-100 mb-3">
+              <mat-label>Nombre de la ronda</mat-label>
+              <input matInput formControlName="name" />
+            </mat-form-field>
+
+            <label class="form-label">Seleccionar movimientos:</label>
+            <div style="display: flex; flex-direction: column; gap: 8px;">
+              <mat-checkbox *ngFor="let move of moves"
+                            [value]="move.idmove.toString()"
+                            [checked]="roundForm.value.selectedMoves.includes(move.idmove)"
+                            (change)="onCheckboxChange($event)">
+                {{ move.name }}
+              </mat-checkbox>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button mat-raised-button type="submit" [disabled]="roundForm.invalid">Guardar</button>
+            <button mat-raised-button type="button" data-bs-dismiss="modal">Cancelar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal para ver nuestros movimientos -->
+  <div class="modal fade" id="movesModal" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Movimientos de la ronda</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+        </div>
+        <div class="modal-body">
+          <ul *ngIf="selectedRound">
+            <li *ngFor="let move of getMoveNames(selectedRound)">
+              {{ move }}
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

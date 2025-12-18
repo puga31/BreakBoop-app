@@ -1,0 +1,42 @@
+.table-container {
+ 
+  border-radius: 8px;
+  overflow: hidden;
+  background-color: white;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+
+  width: 100%;       
+  box-sizing: border-box;
+  padding: 0;        
+  display: block;
+}
+
+table.mat-table {
+  width: 100%;      
+  border-collapse: collapse; 
+  margin: 0;
+}
+
+mat-paginator {
+  padding: 8px 16px 16px 16px; 
+  margin: 0;
+  display: block;
+  box-sizing: border-box;
+}
+
+.mat-row, .mat-header-row {
+  margin: 0;
+  padding: 0;
+}
+
+.search-round-field {
+  background-color: rgba(255, 255, 255, 0);
+  opacity: 1;
+  border-radius: 8px;
+  padding: 6px 10px;
+}
+
+.search-round-field .mat-form-field-flex {
+  background-color: white;
+  border-radius: 8px;
+}

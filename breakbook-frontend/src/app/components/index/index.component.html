@@ -1,0 +1,48 @@
+<section class="index-container background-image">
+
+  <mat-card class="welcome-card" [@fadeIn]>
+    <mat-card-header>
+      <mat-card-title class="welcome-title">Bienvenido a Break<span class="titleGreen">B</span>
+            <span class="titleRed">o</span><span class="titlePurple">o</span> <span class="titleBlue">k</span>
+        </mat-card-title>
+      <mat-card-subtitle class="welcome-subtitle">
+        Tu espacio para crear y explorar movimientos y rondas de breakdance
+      </mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content>
+      <p class="welcome-description">
+        Descubre movimientos icónicos, crea tus propias rondas y practica tus habilidades.<br>
+        Únete a la comunidad y lleva tu baile al siguiente nivel.
+      </p>
+
+<!-- Botones que podemos ver si nuestro usuario esta logueado -->  
+
+      <div class="btn-group" *ngIf="isLoggedIn">
+  <button mat-raised-button routerLink="/moves" aria-label="Ver movimientos">
+    Ver movimientos
+  </button>
+  <button mat-raised-button routerLink="/crear-ronda" aria-label="Crear ronda">
+    Crear ronda
+  </button>
+</div>
+    </mat-card-content>
+
+<!-- Esto si nuestro usuario no está logueado -->
+
+    <mat-card-footer class="footerLogin" *ngIf="!isLoggedIn">
+  <p class="small-text">
+    ¿Ya tienes cuenta?
+    <a routerLink="/login" class="login-link">Inicia sesión aquí</a>
+  </p>
+</mat-card-footer>
+  </mat-card>
+
+  <div class="slider" [@slideChange]="currentIndex" role="region" aria-live="polite" aria-atomic="true">
+    <div class="slide">
+      <h3 class="slide-title">{{ slides[currentIndex].title }}</h3>
+      <p class="slide-text">{{ slides[currentIndex].text }}</p>
+    </div>
+  </div>
+
+</section>

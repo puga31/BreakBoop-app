@@ -1,0 +1,112 @@
+/* Fondo del contenedor principal */
+.index-container {
+  background-color: transparent; 
+  color: #111; 
+  border-radius: 12px;
+  min-height: 0vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 40px;
+  gap: 30px;
+  padding: 1rem;
+  justify-content: center;
+}
+
+/* Bienvenida de nuestra app */
+.welcome-card {
+  max-width: 600px;
+  width: 100%;
+  padding: 2rem 1.5rem;
+  background: #f0efef; /* blanco */
+  color: #111; /* texto negro */
+  border-radius: 12px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+  font-weight: 600;
+  font-size: 1.3rem;
+  text-align:center;
+}
+
+/* Título dentro de la tarjeta */
+.welcome-title {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 2.4rem;
+  color: #111; /* negro */
+  user-select: none;
+  margin-bottom: 0.8rem;
+}
+
+/* Subtítulo */
+.welcome-subtitle {
+  font-size: 1rem;
+  color: #333; /* gris oscuro */
+  font-weight: 400;
+}
+
+/* Descripción */
+.welcome-description {
+  color: #444; /* gris medio */
+  font-weight: 500;
+}
+
+/* Botones dentro de .btn-group */
+.btn-group button.mat-raised-button {
+  background-color: #000; /* negro */
+  color: #fff; /* blanco */
+  font-weight: 700;
+  transition: background-color 0.3s ease;
+}
+
+.btn-group button.mat-raised-button:hover {
+  background-color: #222; /* gris muy oscuro */
+  color: #fff;
+}
+
+/* Enlaces de inicio sesión */
+.login-link {
+  color:#80d884;
+  font-weight: 600;
+  text-decoration: underline;
+}
+
+.login-link:hover {
+  color: #444;
+}
+
+/* Slider container */
+.slider {
+  width: 600px;
+  max-width: 90vw;
+  padding: 20px;
+  background: rgba(99, 188, 104);
+  border-radius: 8px;
+  text-align: center;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  font-family: 'Roboto', sans-serif;
+  color: #111;
+}
+
+/* Título de cada slide */
+.slide-title {
+  margin-bottom: 10px;
+  color: #111; /* negro */
+  font-weight: 700;
+  font-size: 1.8rem;
+}
+
+/* Texto de slide */
+.slide-text {
+  font-size: 1.1em;
+  color: #333; /* gris oscuro */
+}
+
+
+@media (max-width: 600px) {
+  .welcome-title {
+    font-size: 2rem;
+  }
+  .slider {
+    width: 90vw;
+  }
+}
+

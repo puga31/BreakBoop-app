@@ -1,0 +1,46 @@
+<!-- Esto nos muestra un bloque si el usuario lo tenemos logueado -->  
+
+<ng-container *ngIf="currentUser$ | async as user; else showLoginOnly">
+  <mat-toolbar id="navbar">
+    <img src="assets/logobreak.png" alt="BreakBook Logo" routerLink="/" style="height: 100px; cursor: pointer;" />
+
+    <span class="spacer"></span>
+
+<!-- Nuestra barra de navegación-->  
+    <nav>
+      <button mat-button routerLink="/" routerLinkActive="active-link" [routerLinkActiveOptions]="{exact:true}">Inicio</button>
+      <button *ngIf="user.role === 'ADMIN'" mat-button routerLink="/users" routerLinkActive="active-link">Users</button>
+      <button mat-button routerLink="/moves" routerLinkActive="active-link">Moves</button>
+      <button mat-button routerLink="/crear-ronda" routerLinkActive="active-link">Crear Ronda</button>
+    </nav>
+
+    <span class="spacer"></span>
+
+    <button mat-button [matMenuTriggerFor]="userMenu">
+      Hola, {{ user.name }}
+      <mat-icon>expand_more</mat-icon>
+    </button>
+    <mat-menu #userMenu="matMenu">
+      <button mat-menu-item (click)="logout()">
+        <mat-icon>logout</mat-icon>
+        <span>Logout</span>
+      </button>
+    </mat-menu>
+  </mat-toolbar>
+</ng-container>
+
+<ng-template #showLoginOnly>
+  <mat-toolbar id="navbar">
+    <img src="assets/logobreak.png" alt="BreakBook Logo" routerLink="/" style="height: 100px; cursor: pointer;" />
+    <span class="spacer"></span>
+    <button mat-button routerLink="/login">Login</button>
+  </mat-toolbar>
+</ng-template>
+
+<main class="container">
+  <router-outlet></router-outlet>
+</main>
+
+<footer class="footer">
+  <p>© 2025 BreakBook</p>
+</footer>

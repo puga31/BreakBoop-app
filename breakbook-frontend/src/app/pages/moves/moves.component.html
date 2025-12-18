@@ -1,0 +1,149 @@
+<div class="container tableGlobal">
+  <div class="adminHeaderGlobal">
+    <h1 class="titleAdmin">Lista de Movimientos</h1>
+
+    <!-- Botón que tenmos para mostrar/ocultar el formulario -->
+    <button mat-raised-button (click)="toggleForm()" class="buttonAddAdmin">
+      {{ showForm ? 'Cerrar formulario' : (currentMoveId ? 'Actualizar movimiento' : 'Añadir movimiento') }}
+    </button>
+  </div>
+
+  <!-- Nuestro formulario para añadir o editar movimiento -->
+  <form *ngIf="showForm" [formGroup]="moveForm" (ngSubmit)="currentMoveId ? updateMove() : addMove()" class="mb-4">
+
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Nombre</mat-label>
+      <input matInput formControlName="name" />
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Video (URL)</mat-label>
+      <input matInput formControlName="video" />
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Origen</mat-label>
+      <input matInput formControlName="origin" />
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Historia</mat-label>
+      <textarea matInput formControlName="history"></textarea>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Tipo</mat-label>
+      <mat-select formControlName="type">
+        <mat-option value="footwork">Footwork</mat-option>
+        <mat-option value="power">Power</mat-option>
+        <mat-option value="toprock">Toprock</mat-option>
+        <mat-option value="freeze">Freeze</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <button mat-raised-button type="submit">
+      {{ currentMoveId ? 'Actualizar movimiento' : 'Guardar movimiento' }}
+    </button>
+  </form>
+
+  <!-- Alerta de error -->
+  <mat-error *ngIf="showError" style="display: block; margin-bottom: 1rem;">
+    {{ errorMessage }}
+  </mat-error>
+
+  <!-- Alerta de éxito -->
+  <mat-hint *ngIf="showSuccess" style="color: green; margin-bottom: 1rem;">
+    {{ successMessage }}
+  </mat-hint>
+
+  <!-- Filtro de busqueda para buscar los movimientos -->
+  <mat-form-field appearance="outline" class="w-100 my-3 search-move-field">
+    <mat-label>Buscar movimiento por nombre</mat-label>
+    <input
+      matInput
+      [(ngModel)]="searchTerm"
+      (ngModelChange)="filterMoves()"
+      placeholder="Escribe un nombre..."
+    />
+  </mat-form-field>
+
+ 
+  <div *ngIf="moves.length > 0" class="mat-elevation-z8 table-container">
+    <table mat-table [dataSource]="dataSource" matSort class="full-width">
+
+      <!-- Columna de nombre -->
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Nombre</th>
+        <td mat-cell *matCellDef="let move">{{ move.name }}</td>
+      </ng-container>
+
+      <!-- De tipo -->
+      <ng-container matColumnDef="type">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Tipo</th>
+        <td mat-cell *matCellDef="let move">{{ move.type }}</td>
+      </ng-container>
+
+      <!-- Y de usuario -->
+      <ng-container matColumnDef="user">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Usuario</th>
+        <td mat-cell *matCellDef="let move">{{ move.user?.name || 'Sin usuario' }}</td>
+      </ng-container>
+
+      <!-- Columna con las diferentes acciones que podemos hacer -->
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef>Acciones</th>
+        <td mat-cell *matCellDef="let move">
+          <button mat-icon-button matTooltip="Mas información" (click)="openDetailModal(move)" data-bs-toggle="modal" data-bs-target="#detailModal">
+            <mat-icon>search</mat-icon>
+          </button>
+          <button mat-icon-button color="accent" matTooltip="Editar movimiento" (click)="editMove(move)">
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button mat-icon-button color="warn" matTooltip="Eliminar movimiento" (click)="deleteMove(move.idmove)">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+
+    <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+  </div>
+
+  <!-- Si no hay movimientos -->
+  <div *ngIf="moves.length === 0" class="no-moves-msg">
+    <p>No hay movimientos disponibles.</p>
+  </div>
+
+  <!-- Modal de detalle para acceder al video, al origen y a la historia -->
+  <div class="modal fade" id="detailModal" tabindex="-1" aria-labelledby="detailModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="detailModalLabel">{{ selectedMove?.name }}</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+        </div>
+        <div class="modal-body">
+          <div *ngIf="selectedMove?.video_iframe" [innerHTML]="selectedMove.video_iframe"></div>
+          <p><strong>Origen:</strong> {{ selectedMove?.origin }}</p>
+
+          <div>
+            <strong>Historia:</strong>
+            <mat-card class="scrollable-card mt-2">
+              <div class="scrollable-history">
+                {{ selectedMove?.history }}
+              </div>
+            </mat-card>
+          </div>
+
+          <p class="mt-3"><strong>Tipo:</strong> {{ selectedMove?.type }}</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

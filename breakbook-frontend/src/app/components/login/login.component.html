@@ -1,0 +1,48 @@
+<div class="login-container">
+  <!-- Logo -->
+  <div class="logo" style="flex: 1;">
+    <img src="assets/logobreak.png" alt="Logo BreakBook" style="max-width: 100%; height: auto; border-radius: 8px;" />
+  </div>
+
+  <!-- Aquí tenemos el formulario para el login -->
+  <div style="flex: 1; max-width: 400px;">
+    <p id="loginTitle">Login</p>
+
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+      <mat-form-field appearance="fill" class="full-width" style="width: 100%;">
+        <mat-label>Email</mat-label>
+        <input matInput type="email" formControlName="email" />
+        <mat-error *ngIf="loginForm.controls['email'].hasError('required')">
+          El email es obligatorio
+        </mat-error>
+        <mat-error *ngIf="loginForm.controls['email'].hasError('email') && !loginForm.controls['email'].hasError('required')">
+          Introduce un email válido
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" class="full-width" style="width: 100%;">
+        <mat-label>Contraseña</mat-label>
+        <input matInput type="password" formControlName="password" />
+        <mat-error *ngIf="loginForm.controls['password'].hasError('required')">
+          La contraseña es requerida
+        </mat-error>
+      </mat-form-field>
+
+      <button mat-raised-button type="submit" [disabled]="loading || loginForm.invalid" class="full-width buttonLogin">
+        Entrar
+        <mat-progress-spinner *ngIf="loading" diameter="20" mode="indeterminate" color="accent" style="margin-left: 8px;"></mat-progress-spinner>
+      </button>
+    </form>
+
+    <mat-error *ngIf="errorMessage" style="margin-top: 1rem; display: block;">
+      {{ errorMessage }}
+    </mat-error>
+
+    <!-- Enlace que hemos puesto para acceder al registro-->
+    <div class="register-link-container">
+  <p>¿No tienes cuenta?
+    <a routerLink="/register" class="register-link" mat-button>Regístrate aquí</a>
+  </p>
+</div>
+  </div>
+</div>
